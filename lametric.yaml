@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lametric-alert
+  labels:
+    app: lametric-alert
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lametric-alert
+  template:
+    metadata:
+      labels:
+        app: lametric-alert
+    spec:
+      containers:
+        - image: mikedavem/raspberry:lametric-arm-1.0
+          name: lametric-alert
+          imagePullPolicy: IfNotPresent
+          env:
+          - name: API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: lametric-app-secrets
+                key: lametrictoken
+          - name: LAMETRIC_IP
+            value: "192.168.0.50"
+          - name: SQL_FOLDER_TOSEARCH
+            value: "SQL Alerts"
+          - name: RECIPIENT_NAME
+            valueFrom:
+              secretKeyRef:
+                name: lametric-app-secrets
+                key: recipient
+          - name: RECIPIENT_PWD
+            valueFrom:
+              secretKeyRef:
+                name: lametric-app-secrets
+                key: password
+          - name: TIME_INTERVAL_READ_MAIL_S
+            value: "10"
+          - name: TIME_INTERVAL_SEND_ALERT_S
+            value: "30"
+          - name: START_CHECK_HOUR
+            value: "06:00"
+          - name: END_CHECK_HOUR
+            value: "18:00"
+      imagePullSecrets:
+          - name: dockercred
+---
+
