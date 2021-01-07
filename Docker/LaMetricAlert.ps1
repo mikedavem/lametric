@@ -154,7 +154,6 @@ Function CheckAlertMailBox{
                     $iv = New-Object Microsoft.Exchange.WebServices.Data.ItemView(500)
                     $inboxfilter = New-Object Microsoft.Exchange.WebServices.Data.SearchFilter+SearchFilterCollection([Microsoft.Exchange.WebServices.Data.LogicalOperator]::And)
                     $ifisread = New-Object Microsoft.Exchange.WebServices.Data.SearchFilter+IsEqualTo([Microsoft.Exchange.WebServices.Data.EmailMessageSchema]::IsRead,$False)
-                    #$ifsub = New-Object Microsoft.Exchange.WebServices.Data.SearchFilter+ContainsSubstring([Microsoft.Exchange.WebServices.Data.EmailMessageSchema]::DisplayTo,'DL_SQLAdmins@migrosonline.ch')
                     $inboxfilter.add($ifisread)
 
                     Write-Host "($(Get-Date))Checking new emails in $SQLFolderToSearch ..."
